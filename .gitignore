@@ -1,0 +1,12 @@
+# Node dependencies
+node_modules/
+
+# Visual Studio Code settings
+.vscode/
+
+# Logs
+*.log
+
+# Ignore all PNG and TXT files in the repository root
+/*.png
+/*.txt
