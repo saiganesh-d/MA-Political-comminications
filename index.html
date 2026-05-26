@@ -584,6 +584,33 @@
       font-weight: 700;
     }
 
+    .about-prog-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 24px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(15px, 1.15vw, 17px);
+      color: #1a1a1a;
+      line-height: 1.75;
+      font-style: italic;
+    }
+
+    .about-prog-bullets li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 4px;
+    }
+
+    .about-prog-bullets li::before {
+      content: "•";
+      position: absolute;
+      left: 4px;
+      top: 0;
+      color: #0d1b73;
+      font-weight: 700;
+      font-style: normal;
+    }
+
     .about-prog-images {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -2667,6 +2694,16 @@
       border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     }
 
+    .skills-row--2 {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    .skills-slide--2col .skills-row:last-child {
+      border-bottom: none;
+    }
+
     .skill-item {
       display: flex;
       align-items: center;
@@ -2831,7 +2868,7 @@
     .career-panel {
       max-width: 1280px;
       margin: 0 auto;
-      background: url('Assets/Career pathways/image/bg image (12).png') center / cover no-repeat;
+      background: url('Assets/Career Pathways/IMAGE/bg image (13).png') center / cover no-repeat;
       border-radius: 42px;
       padding: 58px 54px;
       overflow: hidden;
@@ -3237,10 +3274,10 @@
             <!-- Card 4 -->
             <div class="wiifu-item">
               <div class="benefit-card">
-                <img src="Assets/What’s in It for You/IMG handson fieldwork.png" alt="Flexible Learning">
+                <img src="Assets/What’s in It for You/IMG handson fieldwork.png" alt="Experiential Learning">
                 <div class="benefit-overlay">
-                  <h4>Flexible Learning</h4>
-                  <p>Study fully online with live and self-paced modules</p>
+                  <h4>Experiential Learning</h4>
+                  <p>Case studies, campaign simulations, and communication labs</p>
                 </div>
               </div>
             </div>
@@ -3248,10 +3285,10 @@
             <!-- Card 5 -->
             <div class="wiifu-item">
               <div class="benefit-card">
-                <img src="Assets/What’s in It for You/IMG handson fieldwork-1.png" alt="Internship Opportunities">
+                <img src="Assets/What’s in It for You/IMG handson fieldwork-1.png" alt="Expert Faculty">
                 <div class="benefit-overlay">
-                  <h4>Internship Opportunities</h4>
-                  <p>Gain real-world exposure with industry and policy partners</p>
+                  <h4>Expert Faculty</h4>
+                  <p>Learn from leading scholars and practitioners</p>
                 </div>
               </div>
             </div>
@@ -3259,10 +3296,10 @@
             <!-- Card 6 -->
             <div class="wiifu-item">
               <div class="benefit-card">
-                <img src="Assets/What’s in It for You/IMG handson fieldwork-2.png" alt="Professional Certification">
+                <img src="Assets/What’s in It for You/IMG handson fieldwork-2.png" alt="Flexible Online Learning">
                 <div class="benefit-overlay">
-                  <h4>Professional Certification</h4>
-                  <p>Earn recognised credentials to advance your career</p>
+                  <h4>Flexible Online Learning</h4>
+                  <p>Study anytime, from anywhere</p>
                 </div>
               </div>
             </div>
@@ -3280,7 +3317,20 @@
   <section class="about-programme-section">
     <div class="container">
       <div class="row align-items-start g-5">
-        <div class="col-lg-6 order-2 order-lg-1">
+        <div class="col-lg-6 order-1">
+          <h2 class="about-prog-title">Programme Overview</h2>
+          <p class="about-prog-body">The <strong>M.A. in Political Communication</strong> explores how politics, media, and public narratives shape contemporary societies.</p>
+          <p class="about-prog-body">The programme helps students understand:</p>
+          <ul class="about-prog-bullets">
+            <li>The role of communication in politics, elections, governance, and democratic life</li>
+            <li>How journalism and media systems shape political discourse</li>
+            <li>Political strategy, campaigns, and public opinion dynamics</li>
+            <li>Digital platforms, data analytics, and their role in modern politics</li>
+            <li>Behavioural insights and emerging technologies such as Artificial Intelligence</li>
+          </ul>
+          <p class="about-prog-body">Students engage with theory, case studies, campaign simulations, and practitioner-led modules to understand political communication across diverse media and political contexts.</p>
+        </div>
+        <div class="col-lg-6 order-2">
           <div class="about-prog-images">
             <img class="img-collage" src="Assets/Programme Overview/Rectangle 127 (7).png" alt="JGU Campus" />
             <div class="about-images-left-col">
@@ -3291,11 +3341,6 @@
               <img class="img-campus" src="Assets/Programme Overview/Rectangle 129 (6).png" alt="Person with a megaphone" />
             </div>
           </div>
-        </div>
-        <div class="col-lg-6 order-1 order-lg-2">
-          <h2 class="about-prog-title">Programme Overview</h2>
-          <p class="about-prog-body">The <strong>M.A. in Political Communication</strong> explores how politics, media, and public narratives shape contemporary societies. The programme helps students understand the role of communication in politics, elections, governance, and democratic life, and how journalism and media systems shape political discourse.</p>
-          <p class="about-prog-body">Students engage with theory, case studies, campaign simulations, and practitioner-led modules to understand political strategy, public opinion dynamics, digital platforms, data analytics, behavioural insights, and emerging technologies such as Artificial Intelligence across diverse media and political contexts.</p>
         </div>
       </div>
     </div>
@@ -3311,30 +3356,28 @@
     <div class="container">
       <div class="skills-carousel">
         <div class="skills-track" id="skillsTrack">
-          <!-- Slide 1 -->
+          <!-- Slide 1: 6 items -->
           <div class="skills-slide">
             <div class="skills-row">
               <div class="skill-item"><img src="img/icons/skill-1.png" alt=""><h6>Political campaign strategy and election messaging</h6></div>
-              <div class="skill-item"><img src="img/icons/skill-2.png" alt=""><h6>Media analysis and political commentary</h6></div>
-              <div class="skill-item"><img src="img/icons/skill-3.png" alt=""><h6>Understanding and interpreting public opinion</h6></div>
+              <div class="skill-item"><img src="img/icons/skill-2.png" alt=""><h6>Public policy and government engagement</h6></div>
+              <div class="skill-item"><img src="img/icons/skill-3.png" alt=""><h6>Media analysis and political commentary</h6></div>
             </div>
             <div class="skills-row">
-              <div class="skill-item"><img src="img/icons/skill-4.png" alt=""><h6>Public policy and government engagement</h6></div>
-              <div class="skill-item"><img src="img/icons/skill-5.png" alt=""><h6>Public affairs and advocacy strategy</h6></div>
+              <div class="skill-item"><img src="img/icons/skill-4.png" alt=""><h6>Public affairs and advocacy strategy</h6></div>
+              <div class="skill-item"><img src="img/icons/skill-5.png" alt=""><h6>Understanding and interpreting public opinion</h6></div>
               <div class="skill-item"><img src="img/icons/skill-6.png" alt=""><h6>Crafting political narratives across media platforms</h6></div>
             </div>
           </div>
-          <!-- Slide 2 -->
-          <div class="skills-slide">
-            <div class="skills-row">
-              <div class="skill-item"><img src="img/icons/skill-1.png" alt=""><h6>Behavioural insights for political messaging</h6></div>
-              <div class="skill-item"><img src="img/icons/skill-2.png" alt=""><h6>Data analytics for campaign planning</h6></div>
-              <div class="skill-item"><img src="img/icons/skill-3.png" alt=""><h6>Digital platforms and audience engagement</h6></div>
+          <!-- Slide 2: 4 items in 2x2 -->
+          <div class="skills-slide skills-slide--2col">
+            <div class="skills-row skills-row--2">
+              <div class="skill-item"><img src="img/icons/skill-1.png" alt=""><h6>Digital politics and data insights</h6></div>
+              <div class="skill-item"><img src="img/icons/skill-2.png" alt=""><h6>Behavioural insights into voter behaviour</h6></div>
             </div>
-            <div class="skills-row">
-              <div class="skill-item"><img src="img/icons/skill-4.png" alt=""><h6>Journalism and media systems analysis</h6></div>
-              <div class="skill-item"><img src="img/icons/skill-5.png" alt=""><h6>Election and governance research</h6></div>
-              <div class="skill-item"><img src="img/icons/skill-6.png" alt=""><h6>AI and emerging technologies in politics</h6></div>
+            <div class="skills-row skills-row--2">
+              <div class="skill-item"><img src="img/icons/skill-3.png" alt=""><h6>Ethical evaluation of political messaging</h6></div>
+              <div class="skill-item"><img src="img/icons/skill-4.png" alt=""><h6>Global perspectives on politics and media</h6></div>
             </div>
           </div>
         </div>
@@ -3422,14 +3465,54 @@
           <div class="elig-tab-inner">
             <div class="elig-section-title">Eligibility:</div>
             <ul class="elig-list">
-              <li>Undergraduate degree with at least 50% marks</li>
-              <li>Candidates with less than 50% marks must appear for the JSAT examination and attend a mandatory interview</li>
+              <li>An undergraduate degree in any discipline from any recognised university in India or abroad.</li>
+              <li>Govt. Issued ID Proof (Aadhar Card / PAN Card / Voter ID) for Indian Applicants &amp; Passport for International Applicants.</li>
             </ul>
             <div class="elig-section-title sec-2">Selection Criteria:</div>
-            <p class="elig-para">Admission decisions are based on a comprehensive review of the applicant's profile, including academic performance, Statement of Purpose (SOP), and academic transcripts.</p>
+            <p class="elig-para">Submit a short essay on — What are your long-term career goals and aspirations, and how will this degree support you in achieving them?</p>
+            <p class="elig-para">Shortlisted candidates may also be invited for a personal interview to assess their motivation and program fit.</p>
           </div>
         </div>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+     WHY CHOOSE JGU ONLINE
+══════════════════════════════════════════ -->
+  <section class="features-section section-global" style="background: url('Assets/Why Choose JGU Online/IMAGE/bg picture (37).png') center center / cover no-repeat; padding: 90px 0;">
+    <div class="container text-center mb-5" style="position: relative; z-index: 1;">
+      <h2 style="color: #fff; font-weight: 800; font-size: clamp(30px, 4vw, 48px); margin-bottom: 16px; text-shadow: 0 2px 16px rgba(0,0,0,0.45);">Why Choose JGU Online?</h2>
+      <p style="color: #f1f1f1; font-size: 17px; max-width: 820px; margin: 0 auto; text-shadow: 0 1px 8px rgba(0,0,0,0.4);">JGU Online combines global recognition, academic excellence, and cutting-edge digital learning to deliver a world-class online education experience.</p>
+    </div>
+    <div class="container" style="position: relative; z-index: 1;">
+      <div class="why-row">
+        <div class="why-card">
+          <img src="img/icons/Capa_1.svg" alt="">
+          <h4>#1 Globally for Online Learning (2024)</h4>
+          <p>Ranked No.1 in the world in the Times Higher Education (THE) Online Learning Rankings 2024.</p>
+        </div>
+        <div class="why-card">
+          <img src="img/icons/Vector-1.svg" alt="">
+          <h4>QS 5-Star Excellence (2025)</h4>
+          <p>Awarded the prestigious QS 5-Star Rating for Online Learning, Teaching, Employability, and Global Engagement.</p>
+        </div>
+        <div class="why-card">
+          <img src="img/icons/Layer_1.svg" alt="">
+          <h4>Digital Innovation of the Year (2021)</h4>
+          <p>Winner of the THE Asia Awards 2021 for developing &ldquo;Tou,&rdquo; a cloud-based platform supporting digital education systems.</p>
+        </div>
+        <div class="why-card">
+          <img src="img/icons/Layer_1-1.svg" alt="">
+          <h4>E-LEAD Certification for Academic Digitisation</h4>
+          <p>Recognised with the QS I-GAUGE E-LEAD Certification for excellence in online academic delivery and digital transformation.</p>
+        </div>
+        <div class="why-card">
+          <img src="img/icons/Vector.svg" alt="">
+          <h4>Growing Global Learner Community</h4>
+          <p>Since launching online programmes in 2020, JGU Online has built a thriving community of 5,000+ learners worldwide.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -3495,45 +3578,6 @@
             </div>
             <p class="pc-desc">Assess digital platforms, audience engagement, and emerging technologies in modern politics.</p>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════
-     WHY CHOOSE JGU ONLINE
-══════════════════════════════════════════ -->
-  <section class="features-section section-global" style="background: url('Assets/Why Choose JGU Online/IMAGE/bg picture (37).png') center center / cover no-repeat; padding: 90px 0;">
-    <div class="container text-center mb-5" style="position: relative; z-index: 1;">
-      <h2 style="color: #fff; font-weight: 800; font-size: clamp(30px, 4vw, 48px); margin-bottom: 16px; text-shadow: 0 2px 16px rgba(0,0,0,0.45);">Why Choose JGU Online?</h2>
-      <p style="color: #f1f1f1; font-size: 17px; max-width: 820px; margin: 0 auto; text-shadow: 0 1px 8px rgba(0,0,0,0.4);">JGU Online combines global recognition, academic excellence, and cutting-edge digital learning to deliver a world-class online education experience.</p>
-    </div>
-    <div class="container" style="position: relative; z-index: 1;">
-      <div class="why-row">
-        <div class="why-card">
-          <img src="img/icons/Vector.svg" alt="">
-          <h4>#1 Globally for Online Learning (2024)</h4>
-          <p>Ranked No.1 in the world in the Times Higher Education (THE) Online Learning Rankings 2024.</p>
-        </div>
-        <div class="why-card">
-          <img src="img/icons/Layer_1.svg" alt="">
-          <h4>QS 5-Star Excellence (2025)</h4>
-          <p>Awarded the prestigious QS 5-Star Rating for Online Learning, Teaching, Employability, and Global Engagement.</p>
-        </div>
-        <div class="why-card">
-          <img src="img/icons/Layer_1-1.svg" alt="">
-          <h4>Digital Innovation of the Year (2021)</h4>
-          <p>Winner of the THE Asia Awards 2021 for developing &ldquo;Tou,&rdquo; a cloud-based platform supporting digital education systems.</p>
-        </div>
-        <div class="why-card">
-          <img src="img/icons/Vector-1.svg" alt="">
-          <h4>E-LEAD Certification for Academic Digitisation</h4>
-          <p>Recognised with the QS I-GAUGE E-LEAD Certification for excellence in online academic delivery and digital transformation.</p>
-        </div>
-        <div class="why-card">
-          <img src="img/icons/Capa_1.svg" alt="">
-          <h4>Growing Global Learner Community</h4>
-          <p>Since launching online programmes in 2020, JGU Online has built a thriving community of 5,000+ learners worldwide.</p>
         </div>
       </div>
     </div>
