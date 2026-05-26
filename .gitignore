@@ -4,9 +4,12 @@ node_modules/
 # Visual Studio Code settings
 .vscode/
 
+Assets/
 # Logs
 *.log
 
 # Ignore all PNG and TXT files in the repository root
 /*.png
 /*.txt
+desing snippets/
+.claude/

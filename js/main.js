@@ -103,7 +103,6 @@
         var img = document.createElement('img');
         img.src = 'img/badges/' + name + '.png';
         img.alt = '';
-        img.loading = 'lazy';
         d.appendChild(img);
         track.appendChild(d);
       });
