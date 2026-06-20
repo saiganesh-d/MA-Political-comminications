@@ -77,11 +77,14 @@
       z-index: 100;
     }
 
-    /* Align the logos to the same left edge as the hero text (hero-inner padding-left). */
+    /* Align the logos to the same left edge as the hero text (shared 1480px
+       centred track + matching fluid padding keeps logos and hero copy on the
+       same left edge at every viewport). */
     .header-section .container {
-      max-width: 100%;
-      padding-left: 60px;
-      padding-right: 60px;
+      max-width: 1480px;
+      margin-inline: auto;
+      padding-left: clamp(24px, 4vw, 60px);
+      padding-right: clamp(24px, 4vw, 60px);
     }
 
     .header-logo-img {
@@ -105,7 +108,7 @@
       flex-wrap: wrap;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 767.98px) {
       .logo-flex-container {
         justify-content: center;
         gap: 15px;
@@ -149,25 +152,23 @@
       /* Space for the floating absolute header */
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 767.98px) {
       .hero-section {
         padding-top: 0;
       }
     }
 
-    /* Student image — a real element so it can sit higher than the text
-       (head above the title), shifted left of centre, and rest just above
-       the info bar. Height exceeds the row so the head rises above the title
-       regardless of how tall the form makes the row. */
+    /* Student image is a real flex item living in its own centre column, sized
+       by column WIDTH (not row height). Flex siblings cannot overlap, so the
+       figure can never crowd the text/form columns the way the old absolute,
+       height-driven element did (which shifted on every screen size). Being
+       taller than the copy + align-items:flex-end keeps the head above the
+       title and the feet on the info-bar baseline. */
     .hero-student {
-      position: absolute;
-      bottom: 0;
-      left: 45%;
-      transform: translateX(-50%);
-      height: calc(100% + 56px);
-      width: auto;
-      max-width: none;
-      z-index: 1;
+      display: block;
+      width: 100%;
+      max-width: 460px;
+      height: auto;
       pointer-events: none;
       object-fit: contain;
       object-position: bottom center;
@@ -180,29 +181,43 @@
     .hero-inner {
       position: relative;
       z-index: 3;
-      /* Elevated above the ::after overlay (z-index 2) to maintain full interactability */
+      /* Centred track so ultrawide screens don't stretch the columns into a
+         giant empty gap; columns share the row via flex, never absolute. */
+      max-width: 1480px;
+      margin-inline: auto;
       display: flex;
-      align-items: stretch;
+      align-items: flex-end;
       justify-content: space-between;
       min-height: 460px;
-      padding: 40px 60px 48px;
-      gap: 28px;
+      padding: 40px clamp(24px, 4vw, 60px) 0;
+      gap: clamp(20px, 3vw, 48px);
     }
 
     .hero-text-col {
       position: relative;
       z-index: 2;
-      flex: 0 0 40%;
-      max-width: 40%;
+      flex: 1 1 380px;
+      min-width: 0;
+      align-self: center;
+      padding-bottom: clamp(24px, 4vw, 48px);
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
 
+    .hero-figure-col {
+      flex: 0 1 clamp(240px, 27vw, 400px);
+      min-width: 0;
+      align-self: flex-end;
+      display: flex;
+      justify-content: center;
+    }
+
     .hero-form-col {
-      flex: 0 0 32%;
-      max-width: 32%;
+      flex: 0 0 clamp(300px, 26vw, 360px);
       z-index: 2;
+      align-self: center;
+      padding-bottom: clamp(24px, 4vw, 48px);
       display: flex;
       align-items: center;
     }
@@ -643,7 +658,10 @@
 
     .about-prog-images .img-collage {
       width: 100%;
-      height: 520px;
+      /* Fluid: scales with the column instead of a hard 520px that the left
+         column had to chase. ~520px at the common ~565px column width. */
+      aspect-ratio: 92 / 85;
+      height: auto;
       object-fit: cover;
       border-radius: 20px;
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
@@ -663,7 +681,9 @@
       border-radius: 20px;
       color: #ffffff;
       text-decoration: none;
-      height: 124px;
+      /* min-height not height: lets the tile absorb text wrap on narrow screens
+         instead of clipping, while the campus image (flex:1) takes the slack. */
+      min-height: 124px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       box-shadow: 0 8px 20px rgba(11, 19, 84, 0.25);
       position: relative;
@@ -901,7 +921,7 @@
       line-height: 1.4;
       font-family: 'DM Sans', sans-serif;
     }
-    @media (max-width: 991px) {
+    @media (max-width: 991.98px) {
       .faculty-row { grid-template-columns: repeat(3, 1fr); row-gap: 32px; }
     }
     @media (max-width: 600px) {
@@ -2314,7 +2334,8 @@
     ================================================ */
     @media (max-width: 1024px) {
       .hero-inner {
-        padding: 28px 28px 28px;
+        padding: 28px;
+        align-items: stretch;
       }
 
       .header-section .container {
@@ -2323,23 +2344,18 @@
       }
 
       .hero-text-col {
-        flex: 0 0 52%;
-        max-width: 52%;
+        flex: 1 1 52%;
+        padding-bottom: 0;
       }
 
       .hero-form-col {
-        flex: 0 0 46%;
-        max-width: 46%;
+        flex: 0 0 clamp(280px, 42%, 380px);
       }
 
-      /* No room for the centered student image at tablet widths —
-         fade it into the background behind the form instead of overlapping text. */
-      .hero-student {
-        left: auto;
-        right: 0;
-        transform: none;
-        height: 100%;
-        opacity: 0.16;
+      /* No room for a third column between text and form at tablet widths —
+         drop the decorative figure entirely (it is aria-hidden). */
+      .hero-figure-col {
+        display: none;
       }
 
       .faculty-card {
@@ -2351,7 +2367,7 @@
       }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 767.98px) {
       .hero-inner {
         flex-direction: column;
         padding: 24px 20px 40px;
@@ -2363,6 +2379,7 @@
       .hero-form-col {
         flex: 0 0 100%;
         max-width: 100%;
+        padding-bottom: 0;
       }
 
       .hero-title {
@@ -2372,14 +2389,6 @@
       .hero-divider {
         margin-left: auto;
         margin-right: auto;
-      }
-
-      .hero-student {
-        left: 50%;
-        right: auto;
-        transform: translateX(-50%);
-        height: 70%;
-        opacity: 0.12;
       }
 
       .header-section .container {
@@ -2546,7 +2555,7 @@
     /* ================================================
        RECOGNITIONS RESPONSIVE
     ================================================ */
-    @media (max-width: 991px) {
+    @media (max-width: 991.98px) {
       .recognitions-badges {
         flex-wrap: wrap;
         gap: 15px;
@@ -2618,7 +2627,7 @@
       background: #6a0dad;
     }
 
-    @media (max-width: 576px) {
+    @media (max-width: 575.98px) {
 
       .rec-badge,
       .rec-badge-center {
@@ -3151,6 +3160,34 @@
       background-position: center;
       flex-shrink: 0;
     }
+
+    /* ================================================
+       KEYBOARD FOCUS (a11y)
+       Placed last so it overrides the earlier `outline:none` on inputs.
+       Only shows on keyboard navigation (:focus-visible), never on mouse
+       click, so it doesn't disturb the visual design.
+    ================================================ */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    [tabindex]:focus-visible,
+    .accordion-button:focus-visible {
+      outline: 3px solid #6a0dad;
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    /* High-contrast ring for controls sitting on the dark navy/purple cards. */
+    .enquire-hero-card :focus-visible,
+    .hero-submit-btn:focus-visible,
+    .hero-form-input:focus-visible,
+    .hero-phone-prefix:focus-visible,
+    .elig-tabs .nav-link:focus-visible,
+    .btn-brochure:focus-visible {
+      outline-color: #FFD700;
+    }
   </style>
 
   <!-- Facebook Pixel Code -->
@@ -3220,9 +3257,6 @@
 
       <div class="hero-inner">
 
-        <!-- Centre: Student image (sits behind, head above the title) -->
-        <img src="Assets/hero section/student image.png" class="hero-student" alt="" aria-hidden="true" />
-
         <!-- Left: Text -->
         <div class="hero-text-col">
           <h1 class="hero-title hero-title--mixed"><span class="hero-ma-inline">M.A. in</span> <span class="text-gradient-studies">Political Communication</span></h1>
@@ -3232,6 +3266,11 @@
             An interdisciplinary master's programme designed to help you analyze political messaging, understand media influence, and interpret public opinion in modern democracies.
           </p>
           <button type="button" class="npfWidgetButton btn-cta npfWidget-3e13abf48b4f4472ca67adb3872e0550">APPLY NOW</button>
+        </div>
+
+        <!-- Centre: Student image (own column; head above the title, feet on the info bar) -->
+        <div class="hero-figure-col">
+          <img src="Assets/hero section/student image.png" class="hero-student" alt="" aria-hidden="true" />
         </div>
 
         <!-- Right: Enquire Form -->
