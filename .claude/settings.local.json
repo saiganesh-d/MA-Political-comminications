@@ -8,7 +8,8 @@
       "Bash(npm install *)",
       "Bash(node qa.js 1920 C:\\\\\\\\Temp\\\\\\\\pcqa\\\\\\\\render_full.png)",
       "Bash(rm -f \"C:Temppcqarender_full.png\")",
-      "Bash(node qa.js 1920 \"C:/Temp/pcqa/render_full.png\")"
+      "Bash(node qa.js 1920 \"C:/Temp/pcqa/render_full.png\")",
+      "Bash(netstat -ano)"
     ]
   }
 }

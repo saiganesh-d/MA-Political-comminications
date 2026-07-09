@@ -77,11 +77,13 @@
       z-index: 100;
     }
 
-    /* Align the logos to the same left edge as the hero text (shared 1480px
+    /* Align the logos to the same left edge as the hero text (shared 1800px
        centred track + matching fluid padding keeps logos and hero copy on the
-       same left edge at every viewport). */
+       same left edge at every viewport). Widened from 1480 to 1800 so the hero
+       composition (text | large student figure | enquire card) spans nearly the
+       full width like the Figma, instead of shrinking into a centred island. */
     .header-section .container {
-      max-width: 1480px;
+      max-width: 1800px;
       margin-inline: auto;
       padding-left: clamp(24px, 4vw, 60px);
       padding-right: clamp(24px, 4vw, 60px);
@@ -164,11 +166,13 @@
        height-driven element did (which shifted on every screen size). Being
        taller than the copy + align-items:flex-end keeps the head above the
        title and the feet on the info-bar baseline. */
+    /* Portrait image (853×1066): size it by HEIGHT so the figure fills the hero
+       and reads big, instead of letterboxing a height-capped contain box. */
     .hero-student {
       display: block;
       width: 100%;
-      max-width: 460px;
-      height: auto;
+      max-width: 650px;
+      height: 100%;
       pointer-events: none;
       object-fit: contain;
       object-position: bottom center;
@@ -183,20 +187,24 @@
       z-index: 3;
       /* Centred track so ultrawide screens don't stretch the columns into a
          giant empty gap; columns share the row via flex, never absolute. */
-      max-width: 1480px;
+      max-width: 1800px;
       margin-inline: auto;
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
-      min-height: 460px;
+      min-height: calc(100vh - 150px);
       padding: 40px clamp(24px, 4vw, 60px) 0;
-      gap: clamp(20px, 3vw, 48px);
+      gap: clamp(14px, 1.3vw, 28px);
     }
 
     .hero-text-col {
       position: relative;
       z-index: 2;
-      flex: 1 1 380px;
+      /* Larger flex-basis than the figure so the headline keeps priority on the
+         shared row; flex naturally leaves enough for the title at every width
+         (the figure yields space) without a hard min-width that would over-shrink
+         the image on ~1200px screens. */
+      flex: 1 1 560px;
       min-width: 0;
       align-self: center;
       padding-bottom: clamp(24px, 4vw, 48px);
@@ -205,16 +213,21 @@
       justify-content: center;
     }
 
+    /* Figure grows on large screens (up to ~700px, matching the Figma) but stays
+       ~400px at/below 1440 where three columns are tight; the calc crosses 400 at
+       1440 and 700 at ~1930. align-self:flex-end plants the feet on the info-bar
+       baseline while the taller image lifts the head up past the title. */
     .hero-figure-col {
-      flex: 0 1 clamp(240px, 27vw, 400px);
+      flex: 0 0 clamp(340px, 34vw, 650px);
       min-width: 0;
-      align-self: flex-end;
+      align-self: stretch;
       display: flex;
+      align-items: flex-end;
       justify-content: center;
     }
 
     .hero-form-col {
-      flex: 0 0 clamp(300px, 26vw, 360px);
+      flex: 0 0 clamp(300px, 21vw, 340px);
       z-index: 2;
       align-self: center;
       padding-bottom: clamp(24px, 4vw, 48px);
@@ -261,12 +274,21 @@
       color: #000;
     }
 
+    /* Title colours matching the Figma: "Political" purple, "Communication" navy */
+    .hero-title-political {
+      color: #6A0DAD;
+    }
+
+    .hero-title-comm {
+      color: #0D1B73;
+    }
+
     /* Thin rule under the heading, as in the Figma design */
     .hero-divider {
       width: 100%;
       max-width: 380px;
-      height: 1px;
-      background: rgba(0, 0, 0, 0.18);
+      height: 3px;
+      background: rgba(0, 0, 0, 0.42);
       margin: 0 0 18px;
     }
 
@@ -319,10 +341,10 @@
         linear-gradient(90deg, #0D1B73 0%, #6A0DAD 50%, #00C2CB 100%) border-box !important;
       color: #6A0DAD !important;
       font-weight: 800;
-      font-size: 16px;
-      padding: 16px 46px !important;
+      font-size: 21px;
+      padding: 14px 46px !important;
       border: 3px solid transparent !important;
-      border-radius: 20px !important;
+      border-radius: 18px !important;
       text-transform: uppercase;
       letter-spacing: 1px;
       cursor: pointer;
@@ -460,8 +482,8 @@
       z-index: 3;
       display: flex;
       background: linear-gradient(90deg, #0d1b73 0%, #6a0dad 50%, #00c2cb 100%);
-      margin-top: 28px;
-      /* Nudges the course-details bar a little lower */
+      margin-top: 0;
+      /* Hero image feet sit flush on top of the info bar */
       margin-bottom: 45px;
       /* Adds space below the info bar before next section */
     }
@@ -1600,6 +1622,37 @@
       .elig-tab-inner {
         padding: 30px 24px !important;
       }
+
+      /* Shrink fee-table padding/font so the three fixed columns stop
+         overlapping and clipping their text on narrow phones. Sizes chosen so
+         the longest single words ("Registration", "commencement") fit without
+         breaking mid-word. */
+      .fee-table th,
+      .fee-table td {
+        padding: 10px 8px;
+        font-size: 12px;
+        word-break: normal;
+        overflow-wrap: break-word;
+      }
+
+      .fee-table th {
+        font-size: 12px;
+      }
+
+      .fee-table th:nth-child(1),
+      .fee-table td:nth-child(1) {
+        width: 34%;
+      }
+
+      .fee-table th:nth-child(2),
+      .fee-table td:nth-child(2) {
+        width: 24%;
+      }
+
+      .fee-table th:last-child,
+      .fee-table td:last-child {
+        width: 42%;
+      }
     }
 
     /* ================================================
@@ -2167,12 +2220,12 @@
        FOOTER
     ================================================ */
     footer {
-      background: linear-gradient(90deg, #0d1b73 0%, #6a0dad 50%, #00c2cb 100%);
+      background: transparent;
       padding: 22px;
     }
 
     footer p {
-      color: #fff;
+      color: #0d1b73;
       font-size: 14px;
       font-weight: 600;
       margin: 0;
@@ -2332,10 +2385,51 @@
     /* ================================================
        RESPONSIVE
     ================================================ */
+
+    /* Wide screens: the hero image becomes a large, bottom-anchored figure that
+       fills the centre whitespace (like the Figma). The PNG has the man in its
+       lower ~55% with a transparent top, so it is sized by WIDTH (near native)
+       and layered behind the text/form rather than squeezed into a flex column. */
+    @media (min-width: 1500px) {
+      .hero-text-col {
+        flex: 0 1 640px;
+      }
+
+      .hero-form-col {
+        flex: 0 0 clamp(350px, 20vw, 380px);
+      }
+
+      .hero-figure-col {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        align-self: auto;
+        z-index: 1;
+        pointer-events: none;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-left: clamp(120px, 12vw, 260px);
+        padding-right: clamp(380px, 24vw, 470px);
+      }
+
+      .hero-student {
+        width: 100%;
+        max-width: 900px;
+        height: auto;
+        max-height: none;
+        object-fit: contain;
+        object-position: bottom center;
+      }
+    }
+
     @media (max-width: 1024px) {
       .hero-inner {
         padding: 28px;
         align-items: stretch;
+        min-height: auto;
       }
 
       .header-section .container {
@@ -2368,6 +2462,13 @@
     }
 
     @media (max-width: 767.98px) {
+      /* g-5's 3rem gutter gives the row -24px side margins, but the Bootstrap
+         .container only pads 12px — the extra 12px overflowed the viewport.
+         Columns stack on mobile, so drop the horizontal gutter (keep vertical). */
+      .row.g-5 {
+        --bs-gutter-x: 1.5rem;
+      }
+
       .hero-inner {
         flex-direction: column;
         padding: 24px 20px 40px;
@@ -2404,19 +2505,25 @@
         font-size: 14px;
       }
 
+      /* Wrap the six stat tiles into a grid so none get clipped off-screen
+         (previously flex-nowrap kept them in one 1170px row → 4 hidden). */
+      .hero-info-bar {
+        flex-wrap: wrap;
+      }
+
       .info-tile-label {
-        font-size: 9px;
+        font-size: 11px;
       }
 
       .info-tile-value {
-        font-size: 12px;
+        font-size: 15px;
       }
 
       .info-tile {
-        padding: 18px 6px;
+        flex: 0 0 33.333%;
+        padding: 16px 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.18);
       }
-
-      /* Increased vertical padding on mobile for spacing */
 
       .features-section {
         border-radius: 24px 24px 0 0;
@@ -3136,6 +3243,32 @@
       margin: 0;
     }
 
+    /* Balanced wrapping for the 5 cards. Natural flex-wrap orphans the 5th card
+       (4+1) in the 992-1199px band — exactly where a 1366-1440px laptop at 125%
+       Windows scaling lands. Force clean column counts so partial rows stay
+       centred: 5 -> 3+2 -> 2 -> 1. */
+    @media (max-width: 1199.98px) {
+      .why-card {
+        flex: 1 1 calc(33.333% - 14px);
+        min-width: 0;
+        max-width: 300px;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .why-card {
+        flex: 1 1 calc(50% - 10px);
+        max-width: calc(50% - 10px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .why-card {
+        flex: 1 1 100%;
+        max-width: 100%;
+      }
+    }
+
     /* --- Recognitions: purple badge cards over campus bg (matches Figma) --- */
     .rec-badge {
       background: linear-gradient(180deg, #6A0DAD 0%, #0d1b73 100%) !important;
@@ -3148,6 +3281,56 @@
     .rec-badge-center {
       flex: 0 0 26% !important;
       transform: none !important;
+    }
+
+    /* 992-1399px band (covers 1280/1366 laptops at 100% and 1366-1440 laptops
+       at 125% Windows scaling): the desktop single-row layout keeps a ~full-width
+       bleed with fixed 56px gaps, so the first/last badges get clipped into their
+       content. At >=1400px the badges are large enough that the bleed reads as an
+       intentional edge-to-edge design (as in Figma); below 992px a clean tablet
+       grid / carousel takes over. Here, drop the bleed and let all five badges
+       flex to fit the viewport (centre kept larger for emphasis) so nothing
+       clips while still filling the width. */
+    @media (min-width: 992px) and (max-width: 1399.98px) {
+      .recognitions-inner {
+        padding: 0 24px;
+      }
+
+      .recognitions-badges {
+        width: 100% !important;
+        margin: 0 !important;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: nowrap;
+      }
+
+      .rec-badge,
+      .rec-badge-large,
+      .rec-badge-center ~ .rec-badge,
+      .rec-badge-center ~ .rec-badge-large {
+        flex: 1 1 0 !important;
+        max-width: 260px !important;
+        transform: none !important;
+      }
+
+      .rec-badge-center {
+        flex: 1.25 1 0 !important;
+        max-width: 360px !important;
+        transform: none !important;
+      }
+    }
+
+    /* 769-991px tablet grid: restore the featured full-width centre badge.
+       The unconditional `.rec-badge-center { flex: 0 0 26% }` override above
+       otherwise shrinks it, leaving the intended "featured centre + 2x2 grid"
+       lopsided (small centre floating top-left). */
+    @media (min-width: 769px) and (max-width: 991.98px) {
+      .rec-badge-center {
+        flex: 0 0 100% !important;
+        max-width: 340px !important;
+        order: -1;
+        transform: none !important;
+      }
     }
 
     /* --- FAQ circular toggle --- */
@@ -3259,10 +3442,10 @@
 
         <!-- Left: Text -->
         <div class="hero-text-col">
-          <h1 class="hero-title hero-title--mixed"><span class="hero-ma-inline">M.A. in</span> <span class="text-gradient-studies">Political Communication</span></h1>
+          <h1 class="hero-title hero-title--mixed"><span class="hero-ma-inline">M.A. in</span> <span class="hero-title-political">Political</span> <span class="hero-title-comm">Communication</span></h1>
           <div class="hero-divider"></div>
           <p class="hero-tagline">UNDERSTAND POLITICS. SHAPE NARRATIVES. INFLUENCE PUBLIC DISCOURSE.</p>
-          <p style="font-family: 'DM Sans', sans-serif; font-size: 18px; line-height: 1.6; color: #1a1a1a; margin-bottom: 32px; font-weight: 400; max-width: 78%;">
+          <p style="font-family: 'DM Sans', sans-serif; font-size: 20px; line-height: 1.6; color: #1a1a1a; margin-bottom: 32px; font-weight: 500; max-width: 82%;">
             An interdisciplinary master's programme designed to help you analyze political messaging, understand media influence, and interpret public opinion in modern democracies.
           </p>
           <button type="button" class="npfWidgetButton btn-cta npfWidget-3e13abf48b4f4472ca67adb3872e0550">APPLY NOW</button>
@@ -3837,7 +4020,7 @@
 
           <!-- Form -->
           <div class="col-lg-6 col-md-12 enquire-form-left">
-            <div class="npf_wgts" data-height="400px" data-w="3e13abf48b4f4472ca67adb3872e0550"></div>
+            <div class="npf_wgts" data-height="640px" data-w="3e13abf48b4f4472ca67adb3872e0550"></div>
           </div>
 
           <!-- Info -->
