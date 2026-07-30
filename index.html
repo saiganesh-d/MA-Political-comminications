@@ -302,6 +302,20 @@
       background-clip: text;
     }
 
+    /* Fixed line breaks for the hero body paragraph (help / media / modern),
+       so it matches the design regardless of viewport width or OS zoom. Only
+       active in the desktop layout; below 1025px the breaks collapse and the
+       paragraph wraps naturally (tablet/mobile). */
+    .hero-para-br {
+      display: none;
+    }
+
+    @media (min-width: 1025px) {
+      .hero-para-br {
+        display: inline;
+      }
+    }
+
     .hero-tagline {
       font-family: 'DM Sans', sans-serif;
       font-size: clamp(18px, 1.56vw, 30px);
@@ -3469,8 +3483,8 @@
           <h1 class="hero-title hero-title--mixed"><span class="hero-ma-inline">M.A. in</span> <span class="hero-title-political">Political</span> <span class="hero-title-comm">Communication</span></h1>
           <div class="hero-divider"></div>
           <p class="hero-tagline">UNDERSTAND POLITICS. SHAPE NARRATIVES. INFLUENCE PUBLIC DISCOURSE.</p>
-          <p style="font-family: 'DM Sans', sans-serif; font-size: 20px; line-height: 1.6; color: #1a1a1a; margin-bottom: 32px; font-weight: 500; max-width: 82%;">
-            An interdisciplinary master's programme designed to help you analyze political messaging, understand media influence, and interpret public opinion in modern democracies.
+          <p class="hero-body-para" style="font-family: 'DM Sans', sans-serif; font-size: clamp(17px, 1.3vw, 20px); line-height: 1.6; color: #1a1a1a; margin-bottom: 32px; font-weight: 500;">
+            An interdisciplinary master's programme designed to help <br class="hero-para-br">you analyze political messaging, understand media <br class="hero-para-br">influence, and interpret public opinion in modern <br class="hero-para-br">democracies.
           </p>
           <button type="button" class="npfWidgetButton btn-cta npfWidget-3e13abf48b4f4472ca67adb3872e0550">APPLY NOW</button>
         </div>
