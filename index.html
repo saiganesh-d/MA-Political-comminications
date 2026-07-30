@@ -169,10 +169,14 @@
     /* Portrait image (853×1066): size it by HEIGHT so the figure fills the hero
        and reads big, instead of letterboxing a height-capped contain box. */
     .hero-student {
-      display: block;
-      width: 100%;
-      max-width: 650px;
-      height: 100%;
+      position: absolute;
+      bottom: 0;
+      left: 52%;
+      transform: translateX(-50%);
+      height: 90%;
+      width: auto;
+      max-width: 54%;
+      z-index: 4;
       pointer-events: none;
       object-fit: contain;
       object-position: bottom center;
@@ -186,51 +190,39 @@
       position: relative;
       z-index: 3;
       /* Centred track so ultrawide screens don't stretch the columns into a
-         giant empty gap; columns share the row via flex, never absolute. */
+         giant empty gap; columns share the row via flex, the image sits
+         absolute in the centre gap. */
       max-width: 1800px;
       margin-inline: auto;
       display: flex;
-      align-items: flex-end;
+      align-items: stretch;
       justify-content: space-between;
-      min-height: calc(100vh - 150px);
-      padding: 40px clamp(24px, 4vw, 60px) 0;
+      /* Compact hero (matches the EAM reference): the image is bottom-anchored
+         and rests just above the info bar, so the row stays content-height
+         instead of a full-viewport block that leaves a gap. */
+      min-height: 460px;
+      padding: 40px clamp(24px, 4vw, 60px) 16px;
       gap: clamp(14px, 1.3vw, 28px);
     }
 
     .hero-text-col {
       position: relative;
       z-index: 2;
-      /* Larger flex-basis than the figure so the headline keeps priority on the
-         shared row; flex naturally leaves enough for the title at every width
-         (the figure yields space) without a hard min-width that would over-shrink
-         the image on ~1200px screens. */
-      flex: 1 1 560px;
+      /* Left column holds ~40% (matches the EAM reference); the centre gap is
+         left for the absolutely-positioned student image, the form takes the
+         right. */
+      flex: 0 0 40%;
+      max-width: 40%;
       min-width: 0;
-      align-self: center;
-      padding-bottom: clamp(24px, 4vw, 48px);
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
 
-    /* Figure grows on large screens (up to ~700px, matching the Figma) but stays
-       ~400px at/below 1440 where three columns are tight; the calc crosses 400 at
-       1440 and 700 at ~1930. align-self:flex-end plants the feet on the info-bar
-       baseline while the taller image lifts the head up past the title. */
-    .hero-figure-col {
-      flex: 0 0 clamp(340px, 34vw, 650px);
-      min-width: 0;
-      align-self: stretch;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-    }
-
     .hero-form-col {
-      flex: 0 0 clamp(300px, 21vw, 340px);
+      flex: 0 0 32%;
+      max-width: 32%;
       z-index: 2;
-      align-self: center;
-      padding-bottom: clamp(24px, 4vw, 48px);
       display: flex;
       align-items: center;
     }
@@ -2413,45 +2405,6 @@
        RESPONSIVE
     ================================================ */
 
-    /* Wide screens: the hero image becomes a large, bottom-anchored figure that
-       fills the centre whitespace (like the Figma). The PNG has the man in its
-       lower ~55% with a transparent top, so it is sized by WIDTH (near native)
-       and layered behind the text/form rather than squeezed into a flex column. */
-    @media (min-width: 1500px) {
-      .hero-text-col {
-        flex: 0 1 640px;
-      }
-
-      .hero-form-col {
-        flex: 0 0 clamp(350px, 20vw, 380px);
-      }
-
-      .hero-figure-col {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        align-self: auto;
-        z-index: 1;
-        pointer-events: none;
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        padding-left: clamp(120px, 12vw, 260px);
-        padding-right: clamp(380px, 24vw, 470px);
-      }
-
-      .hero-student {
-        width: 100%;
-        max-width: 900px;
-        height: auto;
-        max-height: none;
-        object-fit: contain;
-        object-position: bottom center;
-      }
-    }
-
     @media (max-width: 1024px) {
       .hero-inner {
         padding: 28px;
@@ -2465,18 +2418,23 @@
       }
 
       .hero-text-col {
-        flex: 1 1 52%;
-        padding-bottom: 0;
+        flex: 0 0 52%;
+        max-width: 52%;
       }
 
       .hero-form-col {
-        flex: 0 0 clamp(280px, 42%, 380px);
+        flex: 0 0 46%;
+        max-width: 46%;
       }
 
-      /* No room for a third column between text and form at tablet widths —
-         drop the decorative figure entirely (it is aria-hidden). */
-      .hero-figure-col {
-        display: none;
+      /* No room for the centred student image at tablet widths — fade it into
+         the background behind the form instead of overlapping the text. */
+      .hero-student {
+        left: auto;
+        right: 0;
+        transform: none;
+        height: 100%;
+        opacity: 0.16;
       }
 
       .faculty-card {
@@ -2517,6 +2475,36 @@
       .hero-divider {
         margin-left: auto;
         margin-right: auto;
+      }
+
+      /* Mobile: student image becomes a clean, full-colour in-flow element
+         sitting below the text and above the enquire form, instead of a faded
+         overlay behind the form. */
+      .hero-student {
+        position: static;
+        left: auto;
+        right: auto;
+        transform: none;
+        order: 2;
+        display: block;
+        height: auto;
+        width: auto;
+        max-width: 62%;
+        max-height: 340px;
+        opacity: 1;
+        margin: 8px auto 0;
+      }
+
+      .hero-text-col {
+        order: 1;
+      }
+
+      .hero-form-col {
+        order: 3;
+      }
+
+      .btn-cta {
+        align-self: center;
       }
 
       .header-section .container {
@@ -3473,6 +3461,9 @@
 
       <div class="hero-inner">
 
+        <!-- Centre: Student image (sits behind, head above the title, feet on the info bar) -->
+        <img src="Assets/hero section/student image.png" class="hero-student" alt="" aria-hidden="true" />
+
         <!-- Left: Text -->
         <div class="hero-text-col">
           <h1 class="hero-title hero-title--mixed"><span class="hero-ma-inline">M.A. in</span> <span class="hero-title-political">Political</span> <span class="hero-title-comm">Communication</span></h1>
@@ -3482,11 +3473,6 @@
             An interdisciplinary master's programme designed to help you analyze political messaging, understand media influence, and interpret public opinion in modern democracies.
           </p>
           <button type="button" class="npfWidgetButton btn-cta npfWidget-3e13abf48b4f4472ca67adb3872e0550">APPLY NOW</button>
-        </div>
-
-        <!-- Centre: Student image (own column; head above the title, feet on the info bar) -->
-        <div class="hero-figure-col">
-          <img src="Assets/hero section/student image.png" class="hero-student" alt="" aria-hidden="true" />
         </div>
 
         <!-- Right: Enquire Form -->
