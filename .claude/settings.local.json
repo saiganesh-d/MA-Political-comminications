@@ -9,7 +9,13 @@
       "Bash(node qa.js 1920 C:\\\\\\\\Temp\\\\\\\\pcqa\\\\\\\\render_full.png)",
       "Bash(rm -f \"C:Temppcqarender_full.png\")",
       "Bash(node qa.js 1920 \"C:/Temp/pcqa/render_full.png\")",
-      "Bash(netstat -ano)"
+      "Bash(netstat -ano)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('scripts',{}\\),indent=2\\)\\); print\\('deps:', list\\(d.get\\('devDependencies',{}\\).keys\\(\\)\\)+list\\(d.get\\('dependencies',{}\\).keys\\(\\)\\)\\)\")",
+      "Bash(node \"C:/Users/saiga/AppData/Local/Temp/claude/C--Users-saiga-Desktop-clients-MA-Political-comminications/c965def5-2bf1-40ba-8009-c3677d1094d0/scratchpad/heroqa.js\")",
+      "Bash(node \"C:/Users/saiga/AppData/Local/Temp/claude/C--Users-saiga-Desktop-clients-MA-Political-comminications/c965def5-2bf1-40ba-8009-c3677d1094d0/scratchpad/diag.js\")",
+      "Bash(node \"C:/Users/saiga/AppData/Local/Temp/claude/C--Users-saiga-Desktop-clients-MA-Political-comminications/c965def5-2bf1-40ba-8009-c3677d1094d0/scratchpad/progqa.js\")",
+      "Bash(node \"C:/Users/saiga/AppData/Local/Temp/claude/C--Users-saiga-Desktop-clients-MA-Political-comminications/c965def5-2bf1-40ba-8009-c3677d1094d0/scratchpad/ntkqa.js\")",
+      "Bash(node \"C:/Users/saiga/AppData/Local/Temp/claude/C--Users-saiga-Desktop-clients-MA-Political-comminications/c965def5-2bf1-40ba-8009-c3677d1094d0/scratchpad/btndiag.js\")"
     ]
   }
 }

@@ -166,16 +166,22 @@
        height-driven element did (which shifted on every screen size). Being
        taller than the copy + align-items:flex-end keeps the head above the
        title and the feet on the info-bar baseline. */
-    /* Portrait image (853×1066): size it by HEIGHT so the figure fills the hero
-       and reads big, instead of letterboxing a height-capped contain box. */
+    /* Landscape image (826×701): size it by WIDTH tied to the viewport (clamp),
+       NOT by the hero row height. Sizing by row height made the figure a fixed
+       ~551px wide at every laptop width, so it read huge at 125% zoom / small
+       screens and tiny with big empty gaps on large monitors. A viewport-scaled
+       width keeps the figure the same fraction of the layout everywhere, and the
+       clamp cap keeps it in check on large monitors. Bottom-anchored so the feet
+       stay on the info bar; max-width keeps it inside the centre gap so it never
+       covers the text or the form card. */
     .hero-student {
       position: absolute;
       bottom: 0;
-      left: 52%;
+      left: 51%;
       transform: translateX(-50%);
-      height: 90%;
-      width: auto;
-      max-width: 54%;
+      width: clamp(430px, 39vw, 670px);
+      height: auto;
+      max-width: 46%;
       z-index: 4;
       pointer-events: none;
       object-fit: contain;
@@ -199,8 +205,10 @@
       justify-content: space-between;
       /* Compact hero (matches the EAM reference): the image is bottom-anchored
          and rests just above the info bar, so the row stays content-height
-         instead of a full-viewport block that leaves a gap. */
-      min-height: 460px;
+         instead of a full-viewport block that leaves a gap. Viewport-scaled so
+         the figure's headroom stays even across widths and grows slightly on
+         large monitors (where the figure is also a touch taller). */
+      min-height: clamp(480px, 30vw, 560px);
       padding: 40px clamp(24px, 4vw, 60px) 16px;
       gap: clamp(14px, 1.3vw, 28px);
     }
@@ -713,10 +721,13 @@
 
     .about-prog-images .img-collage {
       width: 100%;
-      /* Fluid: scales with the column instead of a hard 520px that the left
-         column had to chase. ~520px at the common ~565px column width. */
-      aspect-ratio: 92 / 85;
-      height: auto;
+      /* Stretch to the full grid-row height so the building's bottom lines up
+         with the megaphone's bottom (matches the Figma). The row height is set
+         by the right column (Learn More tile + megaphone); height:100% + cover
+         fills it and crops the tall 415x753 portrait cleanly, instead of the
+         old aspect-ratio box that pinned it to a short strip. */
+      height: 100%;
+      align-self: stretch;
       object-fit: cover;
       border-radius: 20px;
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
@@ -982,6 +993,12 @@
     @media (max-width: 600px) {
       .faculty-row { grid-template-columns: repeat(2, 1fr); }
     }
+    /* Faculty carousel chrome: inert on desktop (grid layout untouched); the
+       arrows + dots + horizontal snap-scrolling are switched on only in the
+       mobile media query below. */
+    .faculty-carousel { position: relative; }
+    .faculty-arrow,
+    .faculty-dots { display: none; }
 
     /* ================================================
        RECOGNITIONS
@@ -2493,7 +2510,13 @@
 
       /* Mobile: student image becomes a clean, full-colour in-flow element
          sitting below the text and above the enquire form, instead of a faded
-         overlay behind the form. */
+         overlay behind the form.
+         align-self:center is REQUIRED — .hero-inner is a column flex with the
+         default align-items:stretch, and a stretched flex-item <img> with
+         height:auto collapses to 0 height (invisible) in mobile Safari/Firefox,
+         which is why the image rendered in Chrome but went "missing" on phones.
+         An explicit width (not width:auto) keeps the aspect ratio correct across
+         every engine. */
       .hero-student {
         position: static;
         left: auto;
@@ -2501,12 +2524,13 @@
         transform: none;
         order: 2;
         display: block;
+        align-self: center;
+        width: min(74%, 320px);
         height: auto;
-        width: auto;
-        max-width: 62%;
-        max-height: 340px;
+        max-width: 74%;
+        max-height: none;
         opacity: 1;
-        margin: 8px auto 0;
+        margin: 6px auto 14px;
       }
 
       .hero-text-col {
@@ -2588,9 +2612,84 @@
         flex-direction: column;
       }
 
-      .faculty-card {
+      /* Faculty becomes a one-at-a-time carousel on phones: the grid turns into
+         a horizontal snap-scroller (native swipe) and the arrows/dots appear.
+         .faculty-row .faculty-card specificity beats the dead template rule
+         (.faculty-card{flex:0 0 calc(25%...)}) that would otherwise fire once
+         the row is display:flex. */
+      .faculty-row {
+        display: flex;
+        grid-template-columns: none;
+        flex-wrap: nowrap;
+        gap: 0;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .faculty-row::-webkit-scrollbar { display: none; }
+
+      .faculty-row .faculty-card {
         flex: 0 0 100%;
         max-width: 100%;
+        min-width: 0;
+        scroll-snap-align: center;
+        padding: 0 12px;
+      }
+
+      /* fixed image size so the side arrows sit exactly on the image's centre */
+      .faculty-card img {
+        width: 190px;
+        height: 190px;
+        margin-bottom: 16px;
+      }
+
+      .faculty-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 95px;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        padding: 0 0 3px;
+        border: none;
+        border-radius: 50%;
+        background: linear-gradient(90deg, #0D1B73 0%, #6A0DAD 50%, #00C2CB 100%);
+        color: #fff;
+        font-size: 26px;
+        line-height: 1;
+        cursor: pointer;
+        z-index: 5;
+        box-shadow: 0 6px 16px rgba(13, 27, 115, 0.28);
+      }
+      .faculty-arrow--prev { left: -2px; }
+      .faculty-arrow--next { right: -2px; }
+      .faculty-arrow:disabled { opacity: 0.3; cursor: default; box-shadow: none; }
+
+      .faculty-dots {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-top: 24px;
+      }
+      .faculty-dot {
+        width: 9px;
+        height: 9px;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background: rgba(13, 27, 115, 0.22);
+        cursor: pointer;
+        transition: width 0.25s ease, background 0.25s ease;
+      }
+      .faculty-dot.is-active {
+        width: 22px;
+        border-radius: 5px;
+        background: linear-gradient(90deg, #6A0DAD, #00C2CB);
       }
 
       .faculty-grid {
@@ -2648,21 +2747,44 @@
         padding: 50px 20px 40px;
       }
 
-      .about-prog-images {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-
-      .about-images-left-col {
+      /* Mobile order for Programme Overview: Heading -> Image -> Content -> CTA.
+         The heading+content and the images live in two separate Bootstrap
+         columns, so flatten both columns (and the image wrappers) with
+         display:contents — every piece then becomes an orderable flex child of
+         .row — and set the order. Row gutters are zeroed because the flattened
+         columns no longer carry Bootstrap's gutter padding, and align-items is
+         forced back to stretch (the row has .align-items-start) so each item
+         spans the full width. */
+      .about-programme-section .row {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        align-items: stretch;
+        margin: 0;
+        --bs-gutter-x: 0;
+        --bs-gutter-y: 0;
       }
 
+      .about-programme-section .col-lg-6,
+      .about-programme-section .about-prog-images,
+      .about-programme-section .about-images-left-col {
+        display: contents;
+      }
+
+      .about-prog-title { order: 1; }
+      .about-prog-images .img-campus { order: 2; }
+      .about-prog-body,
+      .about-prog-bullets { order: 3; }
+      .about-prog-cta-tile { order: 4; }
+
+      /* megaphone becomes the section's lead image, between heading and content */
       .about-prog-images .img-campus {
-        height: 280px;
+        flex: 0 0 auto;
+        width: 100%;
+        height: 220px;
+        margin: 0 0 26px;
       }
 
+      /* building stays hidden on phones (unchanged) */
       .about-prog-images .img-collage {
         display: none;
       }
@@ -2670,7 +2792,31 @@
       .about-prog-cta-tile {
         height: auto;
         min-height: 110px;
+        margin-top: 4px;
       }
+
+      /* Need to Know More — same mobile order as Programme Overview:
+         Heading -> Image -> Content -> CTA. The image sits in one Bootstrap
+         column and the heading/paragraph/button in the other, so flatten both
+         columns with display:contents and reorder. (heading is an inline-styled
+         <h2>, targeted via .ntk-section h2.) */
+      .ntk-section .row {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        margin: 0;
+        --bs-gutter-x: 0;
+        --bs-gutter-y: 0;
+      }
+
+      .ntk-section .col-lg-6 {
+        display: contents;
+      }
+
+      .ntk-section h2 { order: 1; }
+      .ntk-section .ntk-img { order: 2; margin-bottom: 24px; }
+      .ntk-section .about-prog-body { order: 3; }
+      .ntk-section .btn-brochure { order: 4; align-self: flex-start; }
 
       .enquire-form-container {
         border-radius: 20px;
@@ -3476,7 +3622,7 @@
       <div class="hero-inner">
 
         <!-- Centre: Student image (sits behind, head above the title, feet on the info bar) -->
-        <img src="Assets/hero section/student image.png" class="hero-student" alt="" aria-hidden="true" />
+        <img src="Assets/hero section/student image1.png" class="hero-student" alt="" aria-hidden="true" />
 
         <!-- Left: Text -->
         <div class="hero-text-col">
@@ -3502,23 +3648,23 @@
       <!-- Info Bar -->
       <div class="hero-info-bar">
         <div class="info-tile">
-          <span class="info-tile-label">Postgraduate</span>
+          <span class="info-tile-value">Postgraduate</span>
           <span class="info-tile-value">Degree</span>
         </div>
         <div class="info-tile">
-          <span class="info-tile-label">Duration:</span>
+          <span class="info-tile-value">Duration:</span>
           <span class="info-tile-value">1 Year</span>
         </div>
         <div class="info-tile">
-          <span class="info-tile-label">Batch Starts:</span>
+          <span class="info-tile-value">Batch Starts:</span>
           <span class="info-tile-value">September 2026</span>
         </div>
         <div class="info-tile">
-          <span class="info-tile-label">Fully Online</span>
+          <span class="info-tile-value">Fully Online</span>
           <span class="info-tile-value">Programme</span>
         </div>
         <div class="info-tile">
-          <span class="info-tile-label">Programme Fee:</span>
+          <span class="info-tile-value">Programme Fee:</span>
           <span class="info-tile-value">₹2,75,000</span>
         </div>
         <div class="info-tile">
@@ -3904,7 +4050,9 @@
   <section class="faculty-section section-global">
     <div class="container">
       <h2 class="faculty-title">Meet our <span class="text-gradient">Faculty</span></h2>
-      <div class="faculty-row">
+      <div class="faculty-carousel">
+        <button class="faculty-arrow faculty-arrow--prev" type="button" aria-label="Previous faculty">&#8249;</button>
+        <div class="faculty-row">
         <figure class="faculty-card">
           <img src="img/faculty-kishalay.png" alt="Prof. Kishalay Bhattacharjee">
           <figcaption>
@@ -3940,7 +4088,10 @@
             <span>Assistant Professor of Practice and Assistant Dean (Studio Operations)</span>
           </figcaption>
         </figure>
+        </div>
+        <button class="faculty-arrow faculty-arrow--next" type="button" aria-label="Next faculty">&#8250;</button>
       </div>
+      <div class="faculty-dots" aria-hidden="true"></div>
     </div>
   </section>
 
@@ -4183,32 +4334,63 @@
       }
       updateRecognitions();
 
-      /* ── FACULTY CAROUSEL ── */
-      const facultyGrid = document.querySelector('.faculty-grid');
+      /* ── FACULTY CAROUSEL (mobile only: native snap-scroll + arrows + dots) ──
+         On desktop the arrows/dots are display:none and .faculty-row is a grid
+         (not scrollable), so every handler here is inert. */
+      const facultyRow = document.querySelector('.faculty-row');
       const facultyCards = document.querySelectorAll('.faculty-card');
-      const prevBtn = document.querySelector('.faculty-prev-btn');
-      const nextBtn = document.querySelector('.faculty-next-btn');
-      let fIdx = 0;
+      const facultyPrev = document.querySelector('.faculty-arrow--prev');
+      const facultyNext = document.querySelector('.faculty-arrow--next');
+      const facultyDots = document.querySelector('.faculty-dots');
 
-      function updateFaculty() {
-        if (!facultyGrid || !facultyCards.length) return;
-        const gap = parseFloat(window.getComputedStyle(facultyGrid).gap) || 0;
-        const w = facultyCards[0].offsetWidth + gap;
-        facultyGrid.style.transform = 'translateX(-' + (fIdx * w) + 'px)';
-      }
-
-      if (prevBtn) {
-        prevBtn.addEventListener('click', () => { if (fIdx > 0) { fIdx--; updateFaculty(); } });
-      }
-      if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-          if (!facultyGrid) return;
-          const gap = parseFloat(window.getComputedStyle(facultyGrid).gap) || 0;
-          const w = facultyCards[0].offsetWidth + gap;
-          const visible = Math.floor(facultyGrid.parentElement.offsetWidth / w) || 1;
-          const maxIdx = Math.max(0, facultyCards.length - visible);
-          if (fIdx < maxIdx) { fIdx++; updateFaculty(); }
+      // build one dot per faculty card
+      if (facultyDots && facultyCards.length) {
+        facultyDots.innerHTML = '';
+        facultyCards.forEach((_, i) => {
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'faculty-dot' + (i === 0 ? ' is-active' : '');
+          dot.setAttribute('aria-label', 'Go to faculty ' + (i + 1));
+          dot.addEventListener('click', () => facultyScrollTo(i));
+          facultyDots.appendChild(dot);
         });
+      }
+
+      function facultyCardW() {
+        return (facultyCards[0] && facultyCards[0].getBoundingClientRect().width) || 1;
+      }
+      function facultyCurrent() {
+        if (!facultyRow) return 0;
+        return Math.round(facultyRow.scrollLeft / facultyCardW());
+      }
+      function facultyScrollTo(i) {
+        if (!facultyRow || !facultyCards.length) return;
+        i = Math.max(0, Math.min(facultyCards.length - 1, i));
+        facultyRow.scrollTo({ left: i * facultyCardW(), behavior: 'smooth' });
+      }
+
+      // named updateFaculty so the shared resize handler keeps working
+      function updateFaculty() {
+        if (!facultyRow || !facultyCards.length) return;
+        const i = facultyCurrent();
+        const last = facultyCards.length - 1;
+        if (facultyPrev) facultyPrev.disabled = i <= 0;
+        if (facultyNext) facultyNext.disabled = i >= last;
+        if (facultyDots) {
+          facultyDots.querySelectorAll('.faculty-dot').forEach((d, di) =>
+            d.classList.toggle('is-active', di === i));
+        }
+      }
+
+      if (facultyPrev) facultyPrev.addEventListener('click', () => facultyScrollTo(facultyCurrent() - 1));
+      if (facultyNext) facultyNext.addEventListener('click', () => facultyScrollTo(facultyCurrent() + 1));
+      if (facultyRow) {
+        let fTicking = false;
+        facultyRow.addEventListener('scroll', () => {
+          if (fTicking) return;
+          fTicking = true;
+          requestAnimationFrame(() => { updateFaculty(); fTicking = false; });
+        }, { passive: true });
       }
       updateFaculty();
 
