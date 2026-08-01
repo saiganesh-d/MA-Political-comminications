@@ -2159,7 +2159,10 @@
       background: linear-gradient(135deg, #0d1b73 0%, #6a0dad 50%, #00c2cb 100%);
       border-radius: 40px;
       overflow: hidden;
-      max-width: 980px;
+      /* Wider panel so the info title breaks as "Let's connect and shape" /
+         "your path at JGU!" instead of wrapping into 4 short lines. Capped by
+         the page .container, so it fills the width on desktop and stays fluid. */
+      max-width: 1280px;
       margin: 0 auto;
       box-shadow: 0 12px 40px rgba(13, 27, 115, 0.3);
     }
@@ -2253,17 +2256,27 @@
     }
 
     .enquire-info-title {
-      font-size: clamp(20px, 2.5vw, 28px);
+      font-size: clamp(28px, 3vw, 42px);
       font-weight: 800;
       color: #fff;
-      line-height: 1.35;
-      margin-bottom: 16px;
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+      text-align: left;
     }
 
     .enquire-info-sub {
-      font-size: 15px;
+      font-size: clamp(16px, 1.5vw, 22px);
       color: #ffe500;
-      line-height: 1.7;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    /* Forced line breaks in the enquire info copy (desktop/tablet only); on
+       phones they collapse and the text wraps naturally in the narrow column. */
+    .enq-br { display: none; }
+    @media (min-width: 768px) {
+      .enq-br { display: inline; }
     }
 
     /* ================================================
@@ -2758,7 +2771,10 @@
       .about-programme-section .row {
         display: flex;
         flex-direction: column;
-        align-items: stretch;
+        /* !important beats Bootstrap's .align-items-start (align-items:flex-start
+           !important) on the row — without it the short CTA tile shrinks to its
+           content width instead of spanning full width. */
+        align-items: stretch !important;
         margin: 0;
         --bs-gutter-x: 0;
         --bs-gutter-y: 0;
@@ -2803,7 +2819,9 @@
       .ntk-section .row {
         display: flex;
         flex-direction: column;
-        align-items: stretch;
+        /* !important beats Bootstrap's .align-items-center on this row (same
+           reason as Programme Overview) so the button can span full width. */
+        align-items: stretch !important;
         margin: 0;
         --bs-gutter-x: 0;
         --bs-gutter-y: 0;
@@ -2816,7 +2834,8 @@
       .ntk-section h2 { order: 1; }
       .ntk-section .ntk-img { order: 2; margin-bottom: 24px; }
       .ntk-section .about-prog-body { order: 3; }
-      .ntk-section .btn-brochure { order: 4; align-self: flex-start; }
+      /* full-width button, consistent with the Programme Overview CTA */
+      .ntk-section .btn-brochure { order: 4; align-self: stretch; }
 
       .enquire-form-container {
         border-radius: 20px;
@@ -4202,7 +4221,10 @@
      ENQUIRE NOW
 ══════════════════════════════════════════ -->
   <section class="enquire-section section-global py-5" id="enquire">
-    <div class="container">
+    <!-- container-fluid (not .container) so the panel width scales continuously
+         with the viewport; Bootstrap's .container steps at breakpoints, which
+         made the info title wrap to 3 lines just below the xxl breakpoint. -->
+    <div class="container-fluid mx-auto" style="max-width: 1360px;">
       <h2 class="enquire-section-title text-gradient text-center">Enquire Now!</h2>
       <div class="enquire-form-container mx-auto">
         <div class="row align-items-stretch g-0">
@@ -4213,9 +4235,9 @@
           </div>
 
           <!-- Info -->
-          <div class="col-lg-6 col-md-12 enquire-form-right d-flex flex-column justify-content-center">
-            <h2 class="enquire-info-title">Let's connect and shape your path at JGU!</h2>
-            <p class="enquire-info-sub">Reach out to know more about programmes, admissions, and opportunities.</p>
+          <div class="col-lg-6 col-md-12 enquire-form-right d-flex flex-column justify-content-start">
+            <h2 class="enquire-info-title">Let's connect and shape <br class="enq-br">your path at JGU!</h2>
+            <p class="enquire-info-sub">Reach out to know more about programmes, <br class="enq-br">admissions, and opportunities.</p>
           </div>
 
         </div>
@@ -4511,6 +4533,11 @@
   <script type="text/javascript">var s=document.createElement("script"); s.type="text/javascript"; s.async=true; s.src="https://widgets.in8.nopaperforms.com/emwgts.js"; document.body.appendChild(s);</script>
 
   <script src="https://in8cdn.npfs.co/js/widget/npfwpopup.js"></script><script>let npfW3e13abf48b4f4472ca67adb3872e0550 = new NpfWidgetsInit(        {'widgetId':'3e13abf48b4f4472ca67adb3872e0550',    'baseurl':'widgets.in8.nopaperforms.com',    'formTitle':'Enquiry Form',    'titleColor':'#FF0033',    'backgroundColor':'#ddd',    'iframeHeight':'500px',     'buttonbgColor':'#4c79dc',     'buttonTextColor':'#FFF',    });</script>
+
+  <!-- NoPaperForms Chatbot -->
+  <div class="npf_chatbots" data-w="a8b32b8ab432456a971900791d70c15b" style="display:none;"></div>
+  <script type="text/javascript"> var s=document.createElement("script"); s.type="text/javascript"; s.async=true;
+  s.src="https://chatbot.in8.nopaperforms.com/en-gb/backend/bots/niaachtbtscpt.js/e815e394ee244cd1a8dc3bebaf8d81bf/a8b32b8ab432456a971900791d70c15b"; document.body.appendChild(s); </script>
 
 </body>
 
