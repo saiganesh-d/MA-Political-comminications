@@ -547,11 +547,11 @@
     }
 
     .info-tile-label {
-      font-size: 18px;
-      font-weight: 500;
+      font-size: 27px;
+      font-weight: 800;
       line-height: 1.15;
-      opacity: 0.85;
-      letter-spacing: 0.3px;
+      opacity: 1;
+      letter-spacing: 0.2px;
     }
 
     .info-tile-value {
@@ -560,6 +560,16 @@
       margin-top: 1px;
       line-height: 1.15;
       letter-spacing: 0.2px;
+    }
+
+    /* Desktop: tuck the info bar up so it butts flush against the speaker's
+       podium, closing the cream gap that appears at medium widths where the
+       figure is scaled down (the figure is hidden at <=1024px, so this is
+       scoped to the range where the image is present). */
+    @media (min-width: 1025px) {
+      .hero-info-bar {
+        margin-top: -26px;
+      }
     }
 
     /* ================================================
@@ -2578,7 +2588,8 @@
       }
 
       .info-tile-label {
-        font-size: 11px;
+        font-size: 15px;
+        font-weight: 800;
       }
 
       .info-tile-value {
